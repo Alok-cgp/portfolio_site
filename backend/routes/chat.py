@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
-from ..database.db import get_database
-from ..models.chat import ChatHistory
-from ..services.openrouter import get_ai_response
-from ..services.resume_loader import load_resume
+from backend.database.db import get_database
+from backend.models.chat import ChatHistory
+from backend.services.openrouter import get_ai_response
+from backend.services.resume_loader import load_resume
 
 router = APIRouter()
 
