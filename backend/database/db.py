@@ -14,8 +14,19 @@ if not DATABASE_URL:
     # Fallback or error - for now we assume it's there or we use a local one
     DATABASE_URL = "mongodb://localhost:27017"
 
-client = AsyncIOMotorClient(DATABASE_URL)
-db = client.get_database("portfolio")
+try:
+    client = AsyncIOMotorClient(DATABASE_URL, serverSelectionTimeoutMS=5000)
+    db = client.get_database("portfolio")
+    # Verify connection (optional, might slow down startup)
+    # client.admin.command('ping')
+    print("Connected to MongoDB")
+except Exception as e:
+    print(f"Error connecting to MongoDB: {e}")
+    # Fallback to avoid crashing the app on import, but requests will fail
+    client = None
+    db = None
 
 def get_database():
+    if db is None:
+        raise Exception("Database connection failed. Check logs and DATABASE_URL.")
     return db
